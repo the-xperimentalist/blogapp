@@ -1,0 +1,6 @@
+db.sqlite3
+node_modules/
+_pycache_/
+.DS_Store
+migrations/
+__pycache__/
