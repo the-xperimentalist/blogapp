@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import ProfileForm from './subcomponents/profileForm';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { axiosUnauthInstance } from '../../utils/axiosInstance';
 
 class SignIn extends Component {
   state = {};
   handle_signin = (e, data) => {
-    axios.post('http://localhost:8000/api/writers/signin/', data)
+    axiosUnauthInstance.post('writers/signin/', data)
       .then(response => {
         console.log(response.data);
         window.localStorage.token = response.data["token"];

@@ -90,7 +90,7 @@ class ArticleViewset(viewsets.ViewSet):
         List the articles related to the given article with the article_id. Related means the articles which have the same writer or the same category or both
         """
         instance = Article.objects.get(id=kwargs["article_id"])
-        queryset = self.get_queryset().filter(Q(created_by=instance.created_by) | Q(categories__in=instance.categories))
+        queryset = self.get_queryset().filter(Q(created_by=instance.created_by) | Q(categories__in=instance.categories.all()))
 
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

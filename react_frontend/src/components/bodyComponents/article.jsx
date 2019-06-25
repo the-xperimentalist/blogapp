@@ -1,18 +1,48 @@
 import React, { Component } from 'react';
 import SubHeader from '../common/subHeader'
 import ArticleView1 from '../common/articleView1';
+import {axiosUnauthInstance} from '../../utils/axiosInstance';
 
 class ArticleBody extends Component {
-  state = {};
+  state = {
+    article: {},
+    related_articles_fetching: true,
+    related_articles: [],
+    fetching: true
+  };
+  get_related_articles () {
+    axiosUnauthInstance.get(`articles/${this.props.match.params.article_id}/related/`)
+      .then(response => {
+        this.setState({
+          related_articles: response.data,
+          related_articles_fetching: false
+        })
+      })
+      .catch(err => {
+        console.log("Got error")
+      })
+  };
+  get_article () {
+    axiosUnauthInstance.get(`view/${this.props.match.params.article_id}/`)
+      .then(response => {
+        this.setState({
+          article: response.data,
+          fetching: false
+        })
+      })
+      .catch(err => {
+        console.log("Got error")
+      })
+  }
+  componentDidMount () {
+    console.log(this.props.match.params.article_id)
+    this.get_article();
+    this.get_related_articles();
+  }
   render () {
+    const { article, related_articles } = this.state;
     let img1 = require('../../static/img/demo/avatar2.jpg');
     let img2 = require('../../static/img/demo/intro.jpg');
-    {/*let img3Style = {
-      backgroundImage: require('../../static/img/demo/3.jpg'),
-      height: '150px',
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat'
-    }*/}
     return (
       <React.Fragment>
         <div className="container">
@@ -23,13 +53,13 @@ class ArticleBody extends Component {
                   <p className="text-uppercase font-weight-bold">
                     <a className="text-danger" href="./category.html">Stories</a>
                   </p>
-                  <h1 className="display-4 secondfont mb-3 font-weight-bold">Sterling could jump 8% if Brexit deal gets approved by UK Parliament</h1>
+                  <h1 className="display-4 secondfont mb-3 font-weight-bold">{article.title}</h1>
                   <p className="mb-3">
-                    Analysts told CNBC that the currency could hit anywhere between $1.35-$1.40 if the deal gets passed through the U.K. parliament.
+                    {article.subtitle}
                   </p>
                   <div className="d-flex align-items-center">
                     <img className="rounded-circle" src={img1} width="70" alt="article-img" />
-                    <small className="ml-2">Jane Seymour <span className="text-muted d-block">A few hours ago &middot; 5 min. read</span>
+                    <small className="ml-2">{article.writer_name} <span className="text-muted d-block">A few hours ago &middot; 5 min. read</span>
                     </small>
                   </div>
                 </div>
@@ -52,16 +82,7 @@ class ArticleBody extends Component {
             <div className="col-md-12 col-lg-8">
               <article className="article-post">
                 <p>
-                  Holy grail funding non-disclosure agreement advisor ramen bootstrapping ecosystem. Beta crowdfunding iteration assets business plan paradigm shift stealth mass market seed money rockstar niche market marketing buzz market.
-                </p>
-                <p>
-                  Burn rate release facebook termsheet equity technology. Interaction design rockstar network effects handshake creative startup direct mailing. Technology influencer direct mailing deployment return on investment seed round.
-                </p>
-                <p>
-                  Termsheet business model canvas user experience churn rate low hanging fruit backing iteration buyer seed money. Virality release launch party channels validation learning curve paradigm shift hypotheses conversion. Stealth leverage freemium venture startup business-to-business accelerator market.
-                </p>
-                <p>
-                  Freemium non-disclosure agreement lean startup bootstrapping holy grail ramen MVP iteration accelerator. Strategy market ramen leverage paradigm shift seed round entrepreneur crowdfunding social proof angel investor partner network virality.
+                  {article.description}
                 </p>
               </article>
               <div className="border p-5 bg-lightblue">
@@ -91,9 +112,9 @@ class ArticleBody extends Component {
             <SubHeader />
             <div className="col-lg-6">
               <div className="flex-md-row mb-4 box-shadow h-xl-300">
-                <ArticleView1 />
-                <ArticleView1 />
-                <ArticleView1 />
+                {related_articles.slice(0,3).map((article, key) =>
+                    <ArticleView1 key={article.id} article={article} />
+                  )}
               </div>
             </div>
           </div>

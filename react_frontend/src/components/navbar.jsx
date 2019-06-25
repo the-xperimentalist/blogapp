@@ -40,7 +40,7 @@ class Navbar extends Component {
 
         <nav className="topnav navbar navbar-expand-lg navbar-light bg-white fixed-top">
             <div className="container">
-                <a className="navbar-brand" href="./index.html"><strong>Mundana</strong></a>
+                <Link className="navbar-brand" to="/"><strong>Mundana</strong></Link>
                 <button className="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="javascript:void(0)" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
                 </button>

@@ -29,12 +29,13 @@ ListRelatedArticles = ArticleViewset.as_view({
     'get': 'list_related_articles'
     })
 
-# Retrieve, Update and Destroy article details
+# Update and Destroy article details
 UpdateDestroyArticle = AuthArticleViewset.as_view({
     'patch': 'edit_article',
     'delete': 'destroy'
     })
 
+# Retrieve article details
 RetrieveArticle = ArticleViewset.as_view({
     'get': 'retrieve'
 })
@@ -96,7 +97,7 @@ urlpatterns = [
     path('articles/top/', RetrieveTopArticle, name='retrieve-top-article'),
     path('articles/popular/', ListPopularArticles, name='popular-articles-list'),
     path('articles/recent/', ListRecentPublishedArticles, name='recent-published-articles-list'),
-    path('<int:article_id>/related/', ListRelatedArticles, name='related-articles-list'),
+    path('articles/<int:article_id>/related/', ListRelatedArticles, name='related-articles-list'),
     path('<int:article_id>/', UpdateDestroyArticle, name='retrieve-update-destroy-article'),
     path('view/<int:article_id>/', RetrieveArticle, name='retrieve-article'),
     path('categories/<int:cat_id>/', ListCategoryArticles, name='list-category-articles'),

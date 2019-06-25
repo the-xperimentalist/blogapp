@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class SubHeader extends Component {
   state = {};
@@ -21,7 +22,7 @@ class SubHeader extends Component {
                    Researchers have found an effective target in the brain for electrical stimulation to improve mood in people suffering from depression.
                 </p>
               <div>
-                <small className="d-block"><a className="text-muted" href="./author.html">Favid Rick</a></small>
+                <small className="d-block"><Link className="text-muted" to={`/writers/${1}`}>Favid Rick</Link></small>
                 <small className="text-muted">Dec 12 &middot; 5 min read</small>
               </div>
             </div>

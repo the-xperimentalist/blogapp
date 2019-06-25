@@ -4,7 +4,7 @@ import SubHeader from '../common/subHeader';
 import ArticleView1 from '../common/articleView1';
 import ArticleView2 from '../common/articleView2';
 import ArticleView3 from '../common/articleView3';
-import axios from 'axios';
+import { axiosUnauthInstance } from '../../utils/axiosInstance';
 
 class MainBody extends Component {
   state = {
@@ -17,7 +17,7 @@ class MainBody extends Component {
     this.get_popular_articles();
   };
   get_popular_articles () {
-    axios.get("http://localhost:8000/api/articles/popular/")
+    axiosUnauthInstance.get("articles/popular/")
       .then(response => {
         this.setState({
           popular_articles: response.data,
@@ -31,7 +31,7 @@ class MainBody extends Component {
   get_all_articles () {
     // let authstr = 'Bearer ' + window.localStorage.token;
     // axios.get("http://localhost:8000/api/articles/", { headers: { Authorization: authstr }})
-    axios.get("http://localhost:8000/api/articles/")
+    axiosUnauthInstance.get("articles/")
       .then(response => {
         this.setState({articles: response.data});
       })
@@ -40,7 +40,7 @@ class MainBody extends Component {
       })
   }
   render () {
-    const { popularArticleLoading, popular_articles } = this.state;
+    const { popularArticleLoading, popular_articles, articles } = this.state;
     return (
         <React.Fragment>
             <HomeHeader />
@@ -50,9 +50,11 @@ class MainBody extends Component {
                     <SubHeader />
                     <div className="col-lg-6">
                       <div className="flex-md-row mb-4 box-shadow h-xl-300">
-                          <ArticleView1 />
-                          <ArticleView1 />
-                          <ArticleView1 />
+                      {
+                        popularArticleLoading ? 'Loading...' : popular_articles.slice(0,3).map((article, key) =>
+                          <ArticleView1 key={article.id} article={article} />
+                          )
+                      }
                       </div>
                   </div>
                 </div>
@@ -62,7 +64,7 @@ class MainBody extends Component {
                 <div className="row justify-content-between">
                     <div className="col-md-8">
                       <h5 className="font-weight-bold spanborder"><span>All Stories</span></h5>
-                      {this.state.articles.map((article, key) =>
+                      {articles.map((article, key) =>
                           <ArticleView2 key={article.id} article={article} />
                         )}
                   </div>

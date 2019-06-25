@@ -6,14 +6,15 @@ class ArticleView3 extends Component {
     article: this.props.article
   };
   render () {
+    const { article } = this.props;
     return (
         <li>
           <span>
           <h6 className="font-weight-bold">
-          <Link className="text-dark" to={`/did-supernova-kill-off-large-ocean-animals`}>{this.state.article.title}</Link>
+          <Link className="text-dark" to={`/${article.id}`}>{this.state.article.title}</Link>
           </h6>
           <p className="text-muted">
-              {this.state.article.writer_name} in SCIENCE
+              <Link to={`/writers/${article.created_by}`}>{article.writer_name}</Link> in SCIENCE
           </p>
           </span>
           </li>
